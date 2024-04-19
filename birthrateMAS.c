@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 /* エージェント設定に必要な統計データ 
     性別別・年齢別の人口分布
@@ -16,11 +17,13 @@
     年代別・コーホート別の出生率分布
 */
 
+#define MAX_FILENAME_LENGTH 100     /* 入力ファイル名上限 */
+
 /* 設定パラメータ */
-#define ARGENT 100000               /* エージェント数 */
+#define NUM_ARGENTS 100000          /* エージェント数 */
 #define SIMU_YEAR_MIN  1970         /* 検証する年代の下限 */
 #define SIMU_YEAR_MAX  2020         /* 検証する年代の上限 */
-#define MARRIGE_AGE_MIN 16          /* 結婚可能下限年齢 */ 
+#define MARRIGE_AGE_MIN 15          /* 結婚可能下限年齢 */ 
 #define MARRIGE_AGE_MAX 45          /* 結婚可能上限年齢 */ 
 #define MARRIGE_TIMES_MAX 100       /* 結婚可能回数 */       
 
@@ -44,13 +47,26 @@ typedef struct {
     double tax;           /* 税・社会保険料（独身かどうかでも変わる） */
     double rate_marriage; /* 成婚率（男女で計算式が異なりそう） */
     double rate_divorce;  /* 離婚率（人口統計から世帯収入別の？年別離婚率を採用） */
-}argent;
+} Argent;
 
-/* 入力管理　分布に基づいて確率的にパラメータを与える */
-void SetupDistribution(argent a[], int statistics){
-    for(i=1; i<ARGENT+1; i++){
-        
+
+/* 分布の読み込み */
+void LoadDistribution(Argent argents[], char filename){
+    char filename[MAX_FILENAME_LENGTH];
+    FILE *file;
+
+    /* ファイルを開く */
+    file = fopen(filename, "r");
+    if (file == NULL){
+        fprintf(stderr, "ファイル %s を開けませんでした。\n", filename);
+        /* エラー処理などを行う */
+        return 1;
     }
+}
+
+/* 分布に基づいて確率的にパラメータを与える */
+double GenerateIncome(double income[], int age){
+
 }
 
 /* 出力管理 */
@@ -100,12 +116,24 @@ double RateDeath(){
 
 
 int main (void){
-    char filename[20];
-    int argent[ARGENT];
+    srand(time(NULL));  /* 乱数シード */
 
-    int 
+    Argent argents[NUM_ARGENTS];
 
-    /*
-        シナリオ実行
-    */
+    /* 年齢別所得の分布データを読み込む*/
+    LoadIncomeDistribution();
+    
+    /* 1000人のエージェントを生成し、所得を設定する */
+    Agent agents[NUM_AGENTS];
+    for (int i=0; i<NUM_AGENTS; ++i){
+        agents[i].age = rand() % MAX_AGE; /* ランダムな年齢を設定 */
+        agents[i].income = GenerateIncome(agents[i].age); /* 年齢に基づいて所得を設定 */
+    }
+
+    /* 生成されたエージェントの情報を出力する (任意) */
+    for (int i = 0; i < NUM_AGENTS; ++i) {
+        printf("Agent %d: Age=%d, Income=%.2f\n", i+1, agents[i].age, agents[i].income);
+    }
+
+    return 0;
 }
