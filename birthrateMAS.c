@@ -66,7 +66,8 @@ void LoadDistribution(Argent argents[], char filename){
 
 /* 分布に基づいて確率的にパラメータを与える */
 double GenerateIncome(double income[], int age){
-
+    double u = ((double) rand() / RAND_MAX);    /* 0〜1の一様分布乱数 */
+    
 }
 
 /* 出力管理 */
