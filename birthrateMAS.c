@@ -18,14 +18,16 @@
 */
 
 #define MAX_FILENAME_LENGTH 100     /* 入力ファイル名上限 */
+#define FILENAME_INPUT  "input.csv"
+#define FILENAME_OUTPUT "output.csv"
 
 /* 設定パラメータ */
-#define NUM_ARGENTS 100000          /* エージェント数 */
+#define NUM_ARGENTS 10000           /* エージェント数 */
 #define SIMU_YEAR_MIN  1970         /* 検証する年代の下限 */
 #define SIMU_YEAR_MAX  2020         /* 検証する年代の上限 */
 #define MARRIGE_AGE_MIN 15          /* 結婚可能下限年齢 */ 
 #define MARRIGE_AGE_MAX 45          /* 結婚可能上限年齢 */ 
-#define MARRIGE_TIMES_MAX 100       /* 結婚可能回数 */       
+#define MARRIGE_TIMES_MAX 10        /* 結婚可能回数 */       
 
 /* 制御パラメータ */
 #define MARRIGE_PAIR_MAX_MAN   1    /* 男の同時結婚可能上限数 */
@@ -38,7 +40,8 @@
 typedef struct {
     int partner_man[MARRIGE_PAIR_MAX_MAN]={};     /* 男性パートナー固有番号（構造体配列添字） */
     int partner_woman[MARRIGE_PAIR_MAX_WOMAN]={}; /* 女性パートナー固有番号（構造体配列添字） */
-    int gender;                                   /* 性別 男１ 女２ */
+    int life;                                 /* 生１ 死０  */
+    int gender;                                   /* 性別 女１ 男０ */
     int age;                                      /* 年齢 16~45 */
     int age_marriage[MARRIGE_TIMES_MAX]={};       /* 結婚した年齢 */
     int age_divorce[MARRIGE_TIMES_MAX]={};        /* 離婚した年齢 */
@@ -67,52 +70,36 @@ void LoadDistribution(Argent argents[], char filename){
 /* 分布に基づいて確率的にパラメータを与える */
 double GenerateIncome(double income[], int age){
     double u = ((double) rand() / RAND_MAX);    /* 0〜1の一様分布乱数 */
-    
-}
-
-/* 出力管理 */
-void Output(int year ,int age, double data){
-
 }
 
 /* 個人収入 */
-double PersonalIncome(){
-
+double PersonalIncome(Argent argent){
+    if(agent.gender == 0)
+        return 400
+    else
+        return 200
 }
 
 /* 世帯収入 */
-double HouseholdoIncom(){
-
-}
-
-/* 可処分所得 */
-double DisposableIncome(){
-
-}
+double HouseholdoIncom(double income_man, double income_wman){}
 
 /* 税・社会保険料負担率 */
-double RateTax(){
-
-}
+double RateTax(){}
 
 /* 結婚・出産・子育てによる所得減率 */
-double RateIncomeCut(){
-
-}
+double RateIncomeCut(){}
 
 /* 成婚率 */
 double RateMarrige(){
-
+    return 0.8
 }
 
 /* 離婚率 */
-double RateDivord(){
-
-}
+double RateDivord(){}
 
 /* 死亡率 */
 double RateDeath(){
-
+    return 0.01
 }
 
 
@@ -120,21 +107,50 @@ int main (void){
     srand(time(NULL));  /* 乱数シード */
 
     Argent argents[NUM_ARGENTS];
-
-    /* 年齢別所得の分布データを読み込む*/
-    LoadIncomeDistribution();
     
-    /* 1000人のエージェントを生成し、所得を設定する */
+    /* 1000人のエージェントを生成し、初期値を設定 */
     Agent agents[NUM_AGENTS];
     for (int i=0; i<NUM_AGENTS; ++i){
-        agents[i].age = rand() % MAX_AGE; /* ランダムな年齢を設定 */
-        agents[i].income = GenerateIncome(agents[i].age); /* 年齢に基づいて所得を設定 */
+        agents[i].partner_man[MARRIGE_PAIR_MAX_MAN]={};      /* 男性パートナー固有番号（構造体配列添字） */
+        agents[i].partner_woman[MARRIGE_PAIR_MAX_WOMAN]={};  /* 女性パートナー固有番号（構造体配列添字） */
+        agents[i].life = 1                                   /* 生１ 死０  */
+        agents[i].gender                                     /* 性別 女１ 男０ */
+        agents[i].age = 15                                   /* 年齢 16~45 */
+        agents[i].age_marriage[MARRIGE_TIMES_MAX]={0};       /* 結婚した年齢 */
+        agents[i].age_divorce[MARRIGE_TIMES_MAX]={0};        /* 離婚した年齢 */
+        agents[i].education_level=1;
+        agents[i].income=GenerateIncome(agents[i].gender);        
+        agents[i].tax=0
+        agents[i].rate_marriage=0
+        agents[i].rate_divorce=0
     }
 
-    /* 生成されたエージェントの情報を出力する (任意) */
-    for (int i = 0; i < NUM_AGENTS; ++i) {
-        printf("Agent %d: Age=%d, Income=%.2f\n", i+1, agents[i].age, agents[i].income);
-    }
+/* ファイル出力 */
+    FILE *file = fopen(FILENAME_OUTPUT, "w");
+    
+    /* ファイルが正常に開けたかを確認*/
+    if (file != NULL) {
+        /* ヘッダーを書き込む*/
+        fprintf(file, 
+            "UniqueID,Age,Gender,edu_level,occupation,income,tax,
+            rate_hours_work,rate_hours_housework,rate_hours_childcare,
+            cost_childcare,times_marriage,age_first_marriage,const_marriage\n"
+        );
+        
+        /* 各人物の情報をファイルに書き込む */
+        for (int i = 0; i < sizeof(people) / sizeof(people[0]); ++i) {
+            fprintf(file, "%d,%d,%c\n", 
+                i, agent[i].age, agent[i].gender, agent[i].income
+            );
+        }
 
+        fclose(file);
+        printf("CSVファイルが正常に書き出されました。\n");
+    } else {
+        /* ファイルが開けなかった場合の処理 */
+        printf("エラー：CSVファイルを開けませんでした。\n");
+        return 1;
+    }
+    
     return 0;
 }
