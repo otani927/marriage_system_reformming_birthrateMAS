@@ -1,5 +1,5 @@
-R4 人口動態統計 上巻 婚姻 第9.9表-2 
-age,total_marriage,man_first,ma_re,wman_first,man_first_in_wman_first,man_re_in_wman_first,wman_re,man_first_in_wman_re,man_first_in_wman_re
+R4 人口動態統計 上巻 婚姻 第9.9表-2
+age,total_marriage,man_first,man_re,wman_first,man_first_in_wman_first,man_re_in_wman_first,wman_re,man_first_in_wman_re,man_first_in_wman_re
 total,344823,279179,65644,287543,255895,31648,57280,23284,33996
 ~19,3634,3371,263,3607,3355,252,27,16,11
 20~24,50405,46784,3621,48912,45854,3058,1493,930,563
