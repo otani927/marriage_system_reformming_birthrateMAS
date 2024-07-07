@@ -24,6 +24,7 @@ DemographicSimulation_for_Fertility_by_ABM/
 ｜
 ├── Dockerfile                   # Dockerコンテナのビルド設定
 ├── docker-compose.yml           # Docker Composeの設定
+├── requirements.txt             # Python パッケージのリスト
 ├── README.md                    # プロジェクトの概要、使用方法、インストール手順など
 ├── LICENSE                      # ライセンス情報
 └── .gitignore                   # Gitで無視するファイルやディレクトリのリスト
