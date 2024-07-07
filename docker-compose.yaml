@@ -10,7 +10,9 @@ services:
       MYSQL_USER: demographics
       MYSQL_PASSWORD: demographics
     volumes:
-      - db-data:./database
+      - db-data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./database/seed/seed.sql:/docker-entrypoint-initdb.d/seed.sql
 
   jupyterlab:
     build: .
@@ -18,7 +20,7 @@ services:
     container_name: jupyterlab-abm
     working_dir: /work
     volumes:
-      - ../DemographicSimulation_for_Fertility_by_ABM:/work
+      - ./src:/work
     ports:
       - "8888:8888"
     command: jupyter-lab --ip=0.0.0.0 --allow-root --no-browser
