@@ -11,8 +11,8 @@ services:
       MYSQL_PASSWORD: demographics
     volumes:
       - db-data:/var/lib/mysql
-      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-      - ./database/seed/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+      - ./database/seed/:/seed/
+      - ./database/init/:/docker-entrypoint-initdb.d/
 
   jupyterlab:
     build: .

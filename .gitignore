@@ -1,3 +1,5 @@
 # .ipynb_checkpoints/ はいらない
-src/.ipynb_checkpoints/
+./src/.ipynb_checkpoints/
 
+# プロキシ設定はそれぞれのローカルによるので、Dockerfileはいらない
+./Dockerfile
