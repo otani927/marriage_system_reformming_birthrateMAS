@@ -1,10 +1,6 @@
 # ベースイメージを指定
 FROM python:3.9
 
-# プロキシ環境変数を設定
-ENV http_proxy=http://proxy.cc.yamaguchi-u.ac.jp:8080
-ENV https_proxy=http://proxy.cc.yamaguchi-u.ac.jp:8080
-
 # 必要なシステムパッケージをインストール
 RUN apt-get update && apt-get install -y \
     build-essential \
