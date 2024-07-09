@@ -106,10 +106,7 @@ mysql> SHOW DATABASES;
 5 rows in set (0.00 sec)
 ```
 ```
-use Demographics;
-```
-```
-show tables;
+use Demographics; show tables;
 ```
 初期テーブルの確認。
 ```
