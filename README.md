@@ -72,6 +72,12 @@ localhost:8888
 ```
 
 ### MySQL
+`/docker-entrypoint-initdb.d`にSQLを配置して、コンテナ初回起動時に初期化している。2回目以降はvolumeを削除しないと反映されない。
+> コンテナとボリュームを削除。
+> ```
+> docker-compose down -v
+> ```
+
 ローカルホストで実行。  
 MySQLコンテナ内でコマンドを実行可能にする。
 ```
@@ -84,20 +90,28 @@ mysql -u root -p
 ```
 コンテナ生成時に初期化し、生成したデータベースを表示する。
 ```
-SHOW database;
+show databases;
 ```
-以下のような表示がされる。`demographics`の存在を確認。
 ```
+mysql> SHOW DATABASES;
 +--------------------+
 | Database           |
 +--------------------+
 | information_schema |
-| demographics       |
+| Demographics       |
 | mysql              |
 | performance_schema |
 | sys                |
 +--------------------+
 5 rows in set (0.00 sec)
 ```
-
-> `/docker-entrypoint-initdb.d`にSQLを配置して、コンテナ初回起動時に初期化している。2回目以降はvolumeを削除しないと反映されない。
+```
+use Demographics;
+```
+```
+show tables;
+```
+初期テーブルの確認。
+```
+select * from AnnualsTrends;
+```

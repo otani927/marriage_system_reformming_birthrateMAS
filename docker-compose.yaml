@@ -6,12 +6,11 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: demographics
+      MYSQL_DATABASE: Demographics
       MYSQL_USER: demographics
       MYSQL_PASSWORD: demographics
     volumes:
       - db-data:/var/lib/mysql
-      - ./database/seed/:/seed/
       - ./database/init/:/docker-entrypoint-initdb.d/
 
   jupyterlab:
@@ -28,7 +27,7 @@ services:
       - db
     environment:
       - MYSQL_HOST=db
-      - MYSQL_DATABASE=demographics
+      - MYSQL_DATABASE=Demographics
       - MYSQL_USER=demographics
       - MYSQL_PASSWORD=demographics
 
