@@ -100,3 +100,4 @@ SHOW database;
 5 rows in set (0.00 sec)
 ```
 
+> `/docker-entrypoint-initdb.d`にSQLを配置して、コンテナ初回起動時に初期化している。2回目以降はvolumeを削除しないと反映されない。
