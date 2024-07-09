@@ -2,7 +2,5 @@
 ./src/.ipynb_checkpoints/
 ./src/.Trash-0/
 
-
-
 # プロキシ設定はそれぞれのローカルによるので、Dockerfileはいらない
 ./Dockerfile
