@@ -1,7 +1,12 @@
 # .ipynb_checkpoints/ はいらない
+<<<<<<< HEAD
 ./src/.ipynb_checkpoints
 ./src/tests/.ipynb-checkpoints
 ./src/.Trash-0
+=======
+./src/.ipynb_checkpoints/
+./src/.Trash-0/
+>>>>>>> origin/main
 
 # プロキシ設定はそれぞれのローカルによるので、Dockerfileはいらない
 ./Dockerfile
