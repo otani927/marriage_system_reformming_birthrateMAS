@@ -1,6 +1,6 @@
 # .ipynb_checkpoints/ はいらない
 ./src/.ipynb_checkpoints/
-./src/tests/.ipynb-checkpoints
+./src/tests/.ipynb-checkpoints/
 ./src/.Trash-0/
 
 # プロキシ設定はそれぞれのローカルによるので、Dockerfileはいらない
